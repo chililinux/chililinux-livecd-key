@@ -104,7 +104,7 @@ jobs:
           popd
           sudo rm -rf archlinux-keyring
 
-          sudo git clone --depth 1 https://github.com/chili/chili-keyring.git
+          sudo git clone --depth 1 https://github.com/chililinux/chili-keyring.git
           pushd chili-keyring
             sudo install -m0644 chili.gpg     /usr/share/pacman/keyrings/
             sudo install -m0644 chili-trusted /usr/share/pacman/keyrings/
