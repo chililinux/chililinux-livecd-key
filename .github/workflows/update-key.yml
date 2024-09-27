@@ -120,10 +120,12 @@ jobs:
           cp -fa /etc/pacman.d/gnupg/pubring.kbx  usr/share/pacman/keyrings/
           cp -fa /etc/pacman.d/gnupg/trustdb.gpg  usr/share/pacman/keyrings/
 
+
       - name: Update github
         run: |
+          # https://api.github.com/users/username
           git add --all
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "20652195+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -m "Update $(date +%Y-%m-%d)"
 
