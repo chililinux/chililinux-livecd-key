@@ -1,0 +1,17 @@
+pkgname=chili-livecd-key
+pkgver=$(date +%y.%m.%d)
+pkgrel=$(date +%H%M)
+arch=('any')
+license=('GPL')
+url="https://github.com/chililinux/{pkgname}"
+pkgdesc="DO NOT USE THIS PACKAGE, only for ISO generation in CI/CD"
+source=("git+${url}.git")
+md5sums=(SKIP)
+if [ -e "${pkgname}.install" ]; then
+	install=${pkgname}.install
+fi
+
+package() {
+	cp -ra "${srcdir}/${pkgname}/usr/" "${pkgdir}/"
+	cp -ra "${srcdir}/${pkgname}/etc/" "${pkgdir}/"
+}
