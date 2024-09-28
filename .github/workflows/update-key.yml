@@ -36,7 +36,8 @@ jobs:
           libgpgme-dev \
           libssl-dev \
           zip \
-          python3-pip
+          python3-pip \
+          tmate
           sudo pip3 install meson
           sudo pip3 install ninja
 
