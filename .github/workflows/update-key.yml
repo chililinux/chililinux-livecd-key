@@ -43,9 +43,9 @@ jobs:
           zip \
           python3-pip \
           tmate \
-          inetutils-tools
-          sudo pip3 install meson
-          sudo pip3 install ninja
+          inetutils-tools > /dev/null 2>&1
+          sudo pip3 install meson > /dev/null 2>&1
+          sudo pip3 install ninja > /dev/null 2>&1
 
       # Iniciar a sessão tmate e exibir o link de conexão
       - name: Start tmate session
@@ -75,6 +75,7 @@ jobs:
         env:
           PACMAN_VERSION: 6.0.1
         run: |
+          {
           sudo git clone --depth 1 https://gitlab.manjaro.org/packages/core/pacman.git
           pushd pacman
           sudo wget https://sources.archlinux.org/other/pacman/pacman-${PACMAN_VERSION}.tar.xz
@@ -112,6 +113,7 @@ jobs:
           [chili-stable]
           SigLevel = PackageRequired
           Server = https://repo.chililinux.com/stable/$arch' | sudo tee -a /etc/pacman.conf
+          } > /dev/null 2>&1
 
       - name: install keyrings
         shell: bash
@@ -169,7 +171,7 @@ jobs:
         run: |
           curl -X POST \
             -H "Accept: application/json" \
-            -H "Authorization: token ${{ secrets.WEBHOOK_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.ORGANIZATION_TOKEN }}" \
             --data '{
               "event_type": "${{ github.repository }}",
               "client_payload": {
