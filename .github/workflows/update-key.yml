@@ -19,14 +19,19 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Create a Welcome file
+        run: |
+          echo "Hello from setup job" > shared_file.txt
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
       - id: install-build-dependencies
         shell: bash
         run: |
+          sudo apt-get autoremove
           sudo apt-get update
-          sudo apt-get install \
+          sudo apt-get install -y \
           build-essential \
           cmake \
           git \
@@ -37,9 +42,25 @@ jobs:
           libssl-dev \
           zip \
           python3-pip \
-          tmate
+          tmate \
+          inetutils-tools
           sudo pip3 install meson
           sudo pip3 install ninja
+
+      - name: Display the current user in host
+        run: |
+          # Display the current user in host
+          echo "#########################################"
+          echo "Current host is: $(hostname)"
+          echo "Current user is: $(whoami)"
+          echo "Current user ID is: $(id -u)"
+          echo "Current user details:"
+          id
+          echo "#########################################"
+          df -hT
+          echo "#########################################"
+          ls -lah --color=auto /mnt
+          echo "#########################################"
 
       - name: install pacman
         shell: bash
