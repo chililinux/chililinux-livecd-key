@@ -183,8 +183,8 @@ jobs:
           # Executa o comando curl com a variável data
           response=$(curl -s -X POST \
             -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.REPOSITORY_TOKEN }}" \
             --data "$data" \
-            https://api.github.com/repos/chililinux/build-package/dispatches)
+            "https://api.github.com/repos/chililinux/build-package/dispatches")
           echo
           echo "Workflow de build ${{ github.repository }} acionado. Código de resposta: $response"
