@@ -164,7 +164,7 @@ jobs:
           github_token: ${{ secrets.REPOSITORY_TOKEN }}
           branch: ${{ github.ref }}
 
-       - name: Send Hooks ChiliLinux Build Package
+      - name: Send Hooks ChiliLinux Build Package
         shell: bash
         run: |
           curl -X POST \
