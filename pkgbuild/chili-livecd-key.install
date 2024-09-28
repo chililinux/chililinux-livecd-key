@@ -7,7 +7,6 @@
 post_install() {
 	mkdir -p /etc/pacman.d/gnupg
 	cp -f /usr/share/pacman/keyrings/pubring.gpg /etc/pacman.d/gnupg/pubring.gpg
-	cp -f /usr/share/pacman/keyrings/pubring.kbx /etc/pacman.d/gnupg/pubring.kbx
 	cp -f /usr/share/pacman/keyrings/trustdb.gpg /etc/pacman.d/gnupg/trustdb.gpg
 }
 
