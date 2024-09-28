@@ -145,10 +145,26 @@ jobs:
           popd
           sudo rm -rf chili-keyring
 
+          sudo git clone --depth 1 https://github.com/biglinux/biglinux-keyring.git
+          pushd biglinux-keyring
+            sudo install -m0644 biglinux.gpg     /usr/share/pacman/keyrings/
+            sudo install -m0644 biglinux-trusted /usr/share/pacman/keyrings/
+            sudo install -m0644 biglinux-revoked /usr/share/pacman/keyrings/
+          popd
+          sudo rm -rf biglinux-keyring
+
+          sudo git clone --depth 1 https://github.com/communitybig/community-keyring.git
+          pushd community-keyring
+            sudo install -m0644 community.gpg     /usr/share/pacman/keyrings/
+            sudo install -m0644 community-trusted /usr/share/pacman/keyrings/
+            sudo install -m0644 community-revoked /usr/share/pacman/keyrings/
+          popd
+          sudo rm -rf community-keyring
+
       - name: Update Key
         run: |
           sudo pacman-key --init
-          sudo pacman-key --populate archlinux manjaro chili
+          sudo pacman-key --populate archlinux manjaro chili biglinux community
           cp -fa /etc/pacman.d/gnupg/pubring.gpg  usr/share/pacman/keyrings/
           cp -fa /etc/pacman.d/gnupg/trustdb.gpg  usr/share/pacman/keyrings/
 
@@ -166,7 +182,7 @@ jobs:
           github_token: ${{ secrets.REPOSITORY_TOKEN }}
           branch: ${{ github.ref }}
 
-      - name: Send Hooks ChiliLinux Build Package
+      - name: Build Package on chililinux/build-package
         shell: bash
         run: |
           repo_name=${{ github.repository }}
@@ -186,5 +202,4 @@ jobs:
             -H "Authorization: token ${{ secrets.REPOSITORY_TOKEN }}" \
             --data "$data" \
             "https://api.github.com/repos/chililinux/build-package/dispatches")
-          echo
-          echo "Workflow de build ${{ github.repository }} acionado. Código de resposta: $response"
+          echo "Workflow de build '${{ github.repository }}' acionado. Código de resposta: $response"
