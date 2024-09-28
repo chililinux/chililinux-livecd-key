@@ -19,12 +19,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
       - name: Create a Welcome file
         run: |
           echo "Hello from setup job" > shared_file.txt
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
 
       - id: install-build-dependencies
         shell: bash
@@ -46,6 +46,14 @@ jobs:
           inetutils-tools
           sudo pip3 install meson
           sudo pip3 install ninja
+
+      # Iniciar a sessão tmate e exibir o link de conexão
+      - name: Start tmate session
+        run: |
+          tmate -S /tmp/tmate.sock new-session -d
+          tmate -S /tmp/tmate.sock wait tmate-ready
+          tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+          tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
 
       - name: Display the current user in host
         run: |
