@@ -111,7 +111,7 @@ jobs:
             sudo install -m0644 chili-trusted /usr/share/pacman/keyrings/
             sudo install -m0644 chili-revoked /usr/share/pacman/keyrings/
           popd
-          sudo rm -rf biglinux-keyring
+          sudo rm -rf chili-keyring
 
       - name: Update Key
         run: |
@@ -119,7 +119,6 @@ jobs:
           sudo pacman-key --populate archlinux manjaro chili
           cp -fa /etc/pacman.d/gnupg/pubring.gpg  usr/share/pacman/keyrings/
           cp -fa /etc/pacman.d/gnupg/trustdb.gpg  usr/share/pacman/keyrings/
-
 
       - name: Update github
         run: |
