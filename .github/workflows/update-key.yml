@@ -92,7 +92,7 @@ jobs:
           sudo meson install -C build
           popd
           sudo install -m644 pacman.conf /etc/pacman.conf
-          sudo sed -i '/^TotalDownload/s/^/#/' /etc/pacman.conf
+          sudo sed -i '/^DownloadUser/s/^/#/' /etc/pacman.conf
           sudo install -m644 makepkg.conf /etc/
           sudo mkdir -p /etc/pacman.d
           sudo touch /etc/pacman.d/mirrorlist
@@ -161,7 +161,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.REPOSITORY_TOKEN }}
           branch: ${{ github.ref }}
 
       - name: Send Hooks ChiliLinux Build Package
