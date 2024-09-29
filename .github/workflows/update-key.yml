@@ -191,7 +191,6 @@ jobs:
             "event_type": "'"$repo_name"'",
             "client_payload": {
               "branch": "'"$branch_name"'",
-              "type": "stable",
               "url": "https://github.com/'"$repo_name"'" 
             }
           }'
@@ -201,6 +200,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             --data "$data" \
             https://api.github.com/repos/chililinux/build-package/dispatches)
+
           echo "Response: $response"
           if [[ -z "$response" ]]; then
             echo "Workflow de build '${{ github.repository }}' acionado com sucesso para branch stable."
