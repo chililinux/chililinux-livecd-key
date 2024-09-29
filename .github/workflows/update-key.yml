@@ -28,11 +28,18 @@ jobs:
       #        run: |
       #          echo "Hello from setup job" > shared_file.txt
 
+      - name: Enable debug logging
+        env:
+          ACTIONS_RUNNER_DEBUG: true
+          ACTIONS_STEP_DEBUG: true
+        run: echo "Debugging is enabled"
+
       - id: install-build-dependencies
         shell: bash
         run: |
-          sudo apt-get autoremove -y > /dev/null 2>&1
-          sudo apt-get update -y > /dev/null 2>&1
+          {
+          sudo apt-get autoremove -y
+          sudo apt-get update -y
           sudo apt-get install -y -qq \
           build-essential \
           cmake \
@@ -45,9 +52,10 @@ jobs:
           zip \
           python3-pip \
           tmate \
-          inetutils-tools > /dev/null 2>&1
-          sudo pip3 install meson > /dev/null 2>&1
-          sudo pip3 install ninja > /dev/null 2>&1
+          inetutils-tools
+          sudo pip3 install meson
+          sudo pip3 install ninja
+          } > /dev/null 2>&1
 
       # Iniciar a sessão tmate e exibir o link de conexão
       - name: Start tmate session
@@ -102,8 +110,10 @@ jobs:
           sudo touch /etc/pacman.d/mirrorlist
           popd
           sudo rm -rf pacman
+          } > /dev/null 2>&1
 
           #add chili repository
+          {
           sudo sed -i '/\[core\]/{h;s/.*/\[chili-update-stable\]/;p;x;}' /etc/pacman.conf
           sudo sed -i '/\[core\]/{h;s/.*/SigLevel = PackageRequired/;p;x;}' /etc/pacman.conf
           sudo sed -i '/\[core\]/{h;s/.*/Server = https:\/\/repo.chililinux.com\/update-stable\/$arch/;p;x;}' /etc/pacman.conf
@@ -121,6 +131,7 @@ jobs:
       - name: install keyrings
         shell: bash
         run: |
+          {
           sudo install -dm755 /usr/share/pacman/keyrings/
           sudo git clone --depth 1 https://gitlab.manjaro.org/packages/core/manjaro-keyring.git
           pushd manjaro-keyring
@@ -163,21 +174,26 @@ jobs:
             sudo install -m0644 community-revoked /usr/share/pacman/keyrings/
           popd
           sudo rm -rf community-keyring
+          } > /dev/null 2>&1
 
       - name: Update Key
         run: |
+          {
           sudo pacman-key --init
           sudo pacman-key --populate archlinux manjaro chili biglinux community
           cp -fa /etc/pacman.d/gnupg/pubring.gpg  usr/share/pacman/keyrings/
           cp -fa /etc/pacman.d/gnupg/trustdb.gpg  usr/share/pacman/keyrings/
+          } > /dev/null 2>&1
 
       - name: Update github
         run: |
+          {
           # https://api.github.com/users/username
           git add --all
           git config --local user.email "133667052+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -m "github-actions bot Update $(date +%Y-%m-%d)"
+          } > /dev/null 2>&1
 
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -211,8 +227,8 @@ jobs:
 
           echo "Response: $response"
           if [[ "$response" != "204" ]]; then
-            echo "Falha ao acionar o workflow de build '${{ github.repository }}' : $response"
+            echo "$response: Falha ao acionar o workflow de build '${{ github.repository }}'"
             exit 1
           else
-            echo "Workflow de build '${{ github.repository }}' acionado com sucesso : $response."
+            echo "$response: Workflow de build '${{ github.repository }}' acionado com sucesso."
           fi
