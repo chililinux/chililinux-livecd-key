@@ -22,9 +22,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Create a Welcome file
-        run: |
-          echo "Hello from setup job" > shared_file.txt
+      #      - name: Create a Welcome file
+      #        run: |
+      #          echo "Hello from setup job" > shared_file.txt
 
       - id: install-build-dependencies
         shell: bash
