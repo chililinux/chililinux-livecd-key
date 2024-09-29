@@ -182,35 +182,29 @@ jobs:
           github_token: ${{ secrets.REPOSITORY_TOKEN }}
           branch: ${{ github.ref }}
 
-      - name: Build Package on chililinux/build-package
+      - name: Send Hooks ChiliLinux Build Package
         shell: bash
         run: |
-          repo_name=${{ github.repository }}
-          IFS='/' read -r owner repo <<< "$repo_name"
-          # Define a variável data
+          repo_name=${GITHUB_REPOSITORY}
+          branch_name=${GITHUB_REF_NAME}
           data='{
-            "event_type": "'"$repo"'",
+            "event_type": "'"$repo_name"'",
             "client_payload": {
-              "branch": "stable",
-              "url": "https://github.com/${{ github.repository }}",
-              "type": "stable"
+              "branch": "'"$branch_name"'",
+              "type": "stable",
+              "url": "https://github.com/'"$repo_name"'" 
             }
           }'
-
-          # Executa o comando curl com a variável data
+          echo "Data: $data"
           response=$(curl -s -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.REPOSITORY_TOKEN }}" \
-            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             --data "$data" \
-            "https://api.github.com/repos/chililinux/build-package/dispatches")
-
-          echo "Resposta completa do GitHub:"
-          echo "$response"
-
-          if [ -z "$response" ]; then
+            https://api.github.com/repos/chililinux/build-package/dispatches)
+          echo "Response: $response"
+          if [[ -z "$response" ]]; then
             echo "Workflow de build '${{ github.repository }}' acionado com sucesso para branch stable."
           else
-            echo "Erro ao acionar o workflow de build '${{ github.repository }}' : $response"
+            echo "Falha ao acionar o workflow de build '${{ github.repository }}' : $response"
             exit 1
           fi
