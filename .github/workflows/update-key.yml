@@ -195,6 +195,7 @@ jobs:
             \"event_type\": \"$repo\", \
             \"client_payload\": { \
             \"branch\": \"${{ github.ref_name }}\", \
+            \"branch_type\": \"stable\", \
             \"url\": \"https://github.com/${{ github.repository }}\" \
             }\
           }"
@@ -204,12 +205,14 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.REPOSITORY_TOKEN }}" \
             --data "$data" \
+            -w "%{http_code}" \
+            -o /dev/null \
             "https://api.github.com/repos/chililinux/build-package/dispatches")
 
           echo "Response: $response"
-          if [[ -z "$response" ]]; then
-            echo "Workflow de build '${{ github.repository }}' acionado com sucesso para branch stable."
-          else
+          if [[ "$response" != "204" ]]; then
             echo "Falha ao acionar o workflow de build '${{ github.repository }}' : $response"
             exit 1
+          else
+            echo "Workflow de build '${{ github.repository }}' acionado com sucesso : $response."
           fi
