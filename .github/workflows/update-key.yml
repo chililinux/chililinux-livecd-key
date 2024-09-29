@@ -16,6 +16,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # This gives the GITHUB_TOKEN permission to push
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -187,8 +189,9 @@ jobs:
         run: |
           repo_name=${GITHUB_REPOSITORY}
           branch_name=${GITHUB_REF_NAME}
+          IFS='/' read -r owner repo <<< "$repo_name"
           data='{
-            "event_type": "'"$repo_name"'",
+            "event_type": "'"$repo"'",
             "client_payload": {
               "branch": "'"$branch_name"'",
               "url": "https://github.com/'"$repo_name"'" 
