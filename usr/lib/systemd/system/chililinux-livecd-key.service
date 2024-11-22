@@ -4,7 +4,7 @@ After=pacman-init.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/chili-livecd-key.sh
+ExecStart=/usr/bin/chililinux-livecd-key.sh
 
 [Install]
 WantedBy=multi-user.target

@@ -1,4 +1,4 @@
-pkgname=chili-livecd-key
+pkgname=chililinux-livecd-key
 pkgver=$(date +%y.%m.%d)
 pkgrel=$(date +%H%M)
 arch=('any')
