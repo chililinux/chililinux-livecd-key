@@ -3,30 +3,22 @@ name: ChiliLinux Update Key
 # Controls when the workflow will run
 on:
   schedule:
-    - cron: "0 23 * * 3"
+    #18:00 no UTC-4 (22:00 UTC) todas as sextas-feiras:
+    - cron: "0 22 * * 5"  # Minuto 0, Hora 22 (UTC), Qualquer dia do mês, Qualquer mês, Sexta-feira (5)
   push:
     #branches: [ "master", "main", "*" ]
     branches: ["*"]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions:
       contents: write # This gives the GITHUB_TOKEN permission to push
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-
-      #      - name: Create a Welcome file
-      #        run: |
-      #          echo "Hello from setup job" > shared_file.txt
 
       - name: Enable debug logging
         env:
